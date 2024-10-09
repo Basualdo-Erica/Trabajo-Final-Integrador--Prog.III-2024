@@ -49,7 +49,7 @@ class ComplaintController {
         const { id } = req.params;
 
         try {
-            const deleted = await Complaints.deleteById(id); // Llama al método deleteById
+            const deleted = await Complaints.deleteById(id);
             if (!deleted) {
                 return res.status(404).json({
                     status: 'error',
