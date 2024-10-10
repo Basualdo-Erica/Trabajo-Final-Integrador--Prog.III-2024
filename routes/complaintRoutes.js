@@ -4,6 +4,9 @@ const ComplaintController = require('../controllers/complaintController');
 const router = express.Router();
 const complaintController = new ComplaintController();
 
+//ruta para agregar un reclamo
+router.post('/complaints', complaintController.addComplaint);
+
 //ruta para obtener todos los reclamos
 router.get('/complaints', complaintController.getAllComplaints);
 

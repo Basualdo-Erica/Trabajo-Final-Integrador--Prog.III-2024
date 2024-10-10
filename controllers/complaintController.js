@@ -44,6 +44,25 @@ class ComplaintController {
         }
     }
 
+    async addComplaint(req, res) {
+        try {
+            const newComplaint = req.body; 
+            const createdComplaint = await Complaints.add(newComplaint);
+            
+            res.status(201).json({
+                status: 'exito',
+                message: 'reclamo creado con éxito',
+                data: createdComplaint
+            });
+        } catch (error) {
+            console.error('error al crear reclamo:', error);
+            res.status(500).json({
+                status: 'error',
+                message: 'error al crear el reclamo'
+            });
+        }
+    }
+ 
     //eliminar un reclamo por id
     async delete(req, res) {
         const { id } = req.params;

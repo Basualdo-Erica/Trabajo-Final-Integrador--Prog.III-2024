@@ -1,11 +1,11 @@
 const mysql = require('mysql2/promise');
 
-//configuración de la conexión a MySQL
+//configuracion de la conexion a MySQL
 const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',  
     password: '',  
-    database: 'complaint_management',
+    database: 'reclamos',
     port: 3306,
 });
 
