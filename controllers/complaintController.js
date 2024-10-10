@@ -46,8 +46,8 @@ class ComplaintController {
 
     //obtener reclamo para cliente
     async getClientComplaints(req, res) {
-        //const clientId = req.params.clientId; //descomentar para pruebas
-        const clientId = req.user.id; 
+        const clientId = req.params.clientId; //descomentar para pruebas
+        //const clientId = req.user.id; 
     
         try {
             const results = await Complaints.getComplaintsByClient(clientId);
@@ -90,6 +90,34 @@ class ComplaintController {
             });
         }
     }
+
+    //cancelar reclamo creado
+    async cancelComplaint(req, res) {
+        const clientId = 5; // Descomentar para pruebas
+        const { id } = req.params;  // Descomentar para pruebas
+        //const clientId = req.user.id; 
+
+        try {
+            const success = await Complaints.cancelComplaint(id, clientId);
+            if (!success) {
+                return res.status(400).json({
+                    status: 'error',
+                    message: 'no se puede cancelar el reclamo. verifica que te pertenezca y este en estado creado.',
+                });
+            }
+
+            res.status(200).json({
+                status: 'exito',
+                message: 'reclamo cancelado',
+            });
+        } catch (error) {
+            console.error('error al cancelar reclamo:', error);
+            res.status(500).json({
+                status: 'error',
+                message: 'error al cancelar el reclamo',
+            });
+        }
+    }
  
     //eliminar un reclamo por id
     async delete(req, res) {
@@ -116,6 +144,35 @@ class ComplaintController {
             });
         }
     }
+
+
+    //actualizar un reclamo
+    async updateComplaint(req, res) {
+        const { id } = req.params;
+        const updatedData = req.body;
+
+        try {
+            const success = await Complaints.updateComplaint(id, updatedData);
+            if (!success) {
+                return res.status(404).json({
+                    status: 'error',
+                    message: 'reclamo no encontrado o no se realizaron cambios',
+                });
+            }
+
+            res.status(200).json({
+                status: 'exito',
+                message: 'reclamo actualizado con exito',
+            });
+        } catch (error) {
+            console.error('error al actualizar reclamo:', error);
+            res.status(500).json({
+                status: 'error',
+                message: 'error al actualizar el reclamo',
+            });
+        }
+    }
+    
 }
 
 module.exports = ComplaintController;
