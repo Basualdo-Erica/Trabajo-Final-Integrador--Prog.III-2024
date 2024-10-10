@@ -15,6 +15,13 @@ class Complaints {
         return result.length ? result[0] : null; 
     }
 
+    //obtener reclamos por cliente
+    static async getComplaintsByClient(clientId) {
+        const query = 'SELECT * FROM reclamo WHERE idUsuarioCreador = ?';
+        const [results] = await db.query(query, [clientId]);
+        return results;
+    }
+
     //agregar un reclamo
     static async add(complaint) {
         const query = `INSERT INTO reclamo (asunto, descripcion, fechaCreado, idReclamoEstado, idReclamoTipo, idUsuarioCreador, idUsuarioFinalizador)

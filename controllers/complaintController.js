@@ -44,6 +44,34 @@ class ComplaintController {
         }
     }
 
+    //obtener reclamo para cliente
+    async getClientComplaints(req, res) {
+        //const clientId = req.params.clientId; //descomentar para pruebas
+        const clientId = req.user.id; 
+    
+        try {
+            const results = await Complaints.getComplaintsByClient(clientId);
+            if (results.length === 0) {
+                return res.status(404).json({
+                    status: 'error',
+                    message: 'no se encontraron reclamos para este cliente',
+                });
+            }
+    
+            res.status(200).json({
+                status: 'exito',
+                data: results,
+            });
+        } catch (error) {
+            console.error('error al recuperar reclamo del cliente:', error);
+            res.status(500).json({
+                status: 'error',
+                message: 'error al recuperar reclamo del cliente',
+            });
+        }
+    }
+    
+    //agregar reclamo
     async addComplaint(req, res) {
         try {
             const newComplaint = req.body; 
@@ -51,7 +79,7 @@ class ComplaintController {
             
             res.status(201).json({
                 status: 'exito',
-                message: 'reclamo creado con éxito',
+                message: 'reclamo creado con exito',
                 data: createdComplaint
             });
         } catch (error) {
@@ -78,7 +106,7 @@ class ComplaintController {
 
             res.status(200).json({
                 status: 'exito',
-                message: 'reclamo eliminado con éxito',
+                message: 'reclamo eliminado con exito',
             });
         } catch (error) {
             console.error('error al eliminar reclamo:', error);
