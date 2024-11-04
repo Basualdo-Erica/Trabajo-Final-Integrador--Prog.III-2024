@@ -46,8 +46,8 @@ class ComplaintController {
 
     //obtener reclamo para cliente
     async getClientComplaints(req, res) {
-        const clientId = req.params.clientId; //descomentar para pruebas
-        //const clientId = req.user.id; 
+        //const clientId = req.params.clientId; //descomentar para pruebas
+        const clientId = req.user.id;
     
         try {
             const results = await Complaints.getComplaintsByClient(clientId);
@@ -93,9 +93,9 @@ class ComplaintController {
 
     //cancelar reclamo creado
     async cancelComplaint(req, res) {
-        const clientId = 5; // Descomentar para pruebas
-        const { id } = req.params;  // Descomentar para pruebas
-        //const clientId = req.user.id; 
+        const clientId = req.user.id; 
+        //const clientId = 5; // Descomentar para pruebas
+        //const { id } = req.params;  // Descomentar para pruebas
 
         try {
             const success = await Complaints.cancelComplaint(id, clientId);
@@ -122,19 +122,20 @@ class ComplaintController {
     //eliminar un reclamo por id
     async delete(req, res) {
         const { id } = req.params;
-
+        
         try {
-            const deleted = await Complaints.deleteById(id);
+            //ahora solo marca como eliminado pero no borra permanente de la bd
+            const deleted = await Complaints.markAsDeletedById(id);
             if (!deleted) {
                 return res.status(404).json({
                     status: 'error',
                     message: 'reclamo no encontrado',
                 });
             }
-
+    
             res.status(200).json({
                 status: 'exito',
-                message: 'reclamo eliminado con exito',
+                message: 'reclamo eliminado con éxito',
             });
         } catch (error) {
             console.error('error al eliminar reclamo:', error);
